@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}HOME{% endblock %}
+
+{% block content %}
+  <h1>Šiuo metu turime:</h1>
+  <ul>
+    <li><strong>Salonų:</strong> {{ num_salons }}</li>
+    <li><strong>Paslaugų:</strong> {{ num_services }}</li>
+    <li><strong>Vykdomų paslaugų:</strong> {{ num_bookings_in_progress }}</li>
+  </ul>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Salonai{% endblock %}
+
+{% block content %}
+<h1>Salonai</h1>
+<p>Mūsų salonų sąrašas.</p>
+{% for salon in salons %}
+<p><a href="{% url 'salon' salon.id %}">{{salon.name}} {{salon.city}}</a></p>
+{% endfor %}
+{% endblock %}

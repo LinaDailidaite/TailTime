@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Salonas{% endblock %}
+
+{% block content %}
+<p><strong>Pavadinimas: </strong>{{ salon.name }}</p>
+<p><strong>Miestas: </strong>{{ salon.city }}</p>
+<p>{{ salon.address }}</p>
+<hr>
+<p><strong>Paslaugos:</strong></p>
+{% for service in salon.services.all %}
+<p>{{ service.name }}</p>
+{% endfor %}
+{% endblock %}
