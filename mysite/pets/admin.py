@@ -21,7 +21,14 @@ class ServiceAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ['user', 'salon', 'date_time', 'status']
+    list_display = ['salon', 'date_time', 'status', 'user']
+    list_filter = ['status', 'date_time']
+    list_editable = ['status', 'date_time', 'user']
+    search_fields = ['user', 'service']
+    fieldsets = [
+        ('General', {'fields': ('service', 'salon')}),
+        ('Availability', {'fields': ('status', 'date_time', 'user')}),
+    ]
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Salon, SalonAdmin)

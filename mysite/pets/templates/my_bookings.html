@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}My bookings{% endblock %}
+
+{% block content %}
+<h1>My bookings:</h1>
+{% for booking in bookings %}
+<p class="{% if instance.is_overdue %}text-danger{% endif %}">{{ booking.name }} ({{ booking.salon }})</p>
+{% endfor %}
+{% endblock %}

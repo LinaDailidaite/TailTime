@@ -3,9 +3,24 @@
 {% block title %}Salonai{% endblock %}
 
 {% block content %}
-<h1>Salonai</h1>
-<p>Mūsų salonų sąrašas.</p>
-{% for salon in salons %}
-<p><a href="{% url 'salon' salon.id %}">{{salon.name}} {{salon.city}}</a></p>
-{% endfor %}
+{% load static %}
+<h1>Mūsų salonai:</h1>
+<br>
+<div class="row">
+    {% for salon in salons %}
+    <div class="col-md-4 d-flex align-items-stretch">
+        <div class="card mb-4 shadow-sm" style="width:300px">
+            {% if salon.image %}
+            <img src="{{ salon.image.url }}" class="card-img-top" alt="...">
+            {% else %}
+            <img src="{% static 'img/no-image.png' %}" class="card-img-top">
+            {% endif %}
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">{{ salon.name }}</h6>
+                <p class="card-text"><a href="{{ salon.id }}">{{ salon.city }}</a></p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

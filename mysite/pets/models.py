@@ -15,18 +15,18 @@ class CustomUser(AbstractUser):
     is_salon_owner = models.BooleanField(default=False)
     photo = models.ImageField(("Photo"), upload_to="profile_pics", null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.photo and os.path.exists(self.photo.path):
-            img = Image.open(self.photo.path)
-            min_side = min(img.width, img.height)
-            left = (img.width - min_side) // 2
-            top = (img.height - min_side) // 2
-            right = left + min_side
-            bottom = top + min_side
-            img = img.crop((left, top, right, bottom))
-            img = img.resize((300, 300), Image.LANCZOS)
-            img.save(self.photo.path)
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     if self.photo and os.path.exists(self.photo.path):
+    #         img = Image.open(self.photo.path)
+    #         min_side = min(img.width, img.height)
+    #         left = (img.width - min_side) // 2
+    #         top = (img.height - min_side) // 2
+    #         right = left + min_side
+    #         bottom = top + min_side
+    #         img = img.crop((left, top, right, bottom))
+    #         img = img.resize((300, 300), Image.LANCZOS)
+    #         img.save(self.photo.path)
 
     class Meta:
         verbose_name = ("User")
@@ -39,6 +39,7 @@ class Salon(models.Model):
     description = models.TextField(verbose_name="Description", max_length=500)
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Owner")
     image = models.ImageField('Image', upload_to='Images', null=True, blank=True)
+
 
     class Meta:
         verbose_name = _('Salon')
@@ -67,10 +68,12 @@ class Service(models.Model):
         return f"{self.name} - {self.price}€"
 
 class Booking(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="User")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="User", null=True, blank=True)
     salon = models.ForeignKey(Salon, on_delete=models.CASCADE, verbose_name="Salon")
     service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name="Service")
     date_time = models.DateTimeField(verbose_name=_("Date"), null=True, blank=True)
+    def previous_booking(self):
+        return self.date_time and timezone.now().date() > self.date_time
 
     LOAN_STATUS = (
         ('c', _('Confirmed')),
