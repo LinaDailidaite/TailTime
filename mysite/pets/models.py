@@ -15,18 +15,18 @@ class CustomUser(AbstractUser):
     is_salon_owner = models.BooleanField(default=False)
     photo = models.ImageField(("Photo"), upload_to="profile_pics", null=True, blank=True)
 
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)
-    #     if self.photo and os.path.exists(self.photo.path):
-    #         img = Image.open(self.photo.path)
-    #         min_side = min(img.width, img.height)
-    #         left = (img.width - min_side) // 2
-    #         top = (img.height - min_side) // 2
-    #         right = left + min_side
-    #         bottom = top + min_side
-    #         img = img.crop((left, top, right, bottom))
-    #         img = img.resize((300, 300), Image.LANCZOS)
-    #         img.save(self.photo.path)
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.photo and os.path.exists(self.photo.path):
+            img = Image.open(self.photo.path)
+            min_side = min(img.width, img.height)
+            left = (img.width - min_side) // 2
+            top = (img.height - min_side) // 2
+            right = left + min_side
+            bottom = top + min_side
+            img = img.crop((left, top, right, bottom))
+            img = img.resize((300, 300), Image.LANCZOS)
+            img.save(self.photo.path)
 
     class Meta:
         verbose_name = ("User")
@@ -36,7 +36,7 @@ class Salon(models.Model):
     name = models.CharField(verbose_name="Name", max_length=200)
     city = models.CharField(verbose_name="City", max_length=50)
     address = models.CharField(verbose_name="Address", max_length=100)
-    description = models.TextField(verbose_name="Description", max_length=500)
+    description = HTMLField(verbose_name="Description", max_length=3000, default="")
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Owner")
     image = models.ImageField('Image', upload_to='Images', null=True, blank=True)
 
@@ -94,3 +94,14 @@ class Booking(models.Model):
     def __str__(self):
         return f"{self.user} - {self.salon} ({self.date_time} {self.status})"
 
+
+class ServiceReview(models.Model):
+    service = models.ForeignKey(to="service", verbose_name="service", on_delete=models.SET_NULL, null=True, blank=True, related_name="reviews")
+    reviewer = models.ForeignKey(to=CustomUser, verbose_name="Reviewer", on_delete=models.SET_NULL, null=True, blank=True)
+    date_created = models.DateTimeField(verbose_name="Date Created", auto_now_add=True)
+    content = models.TextField(verbose_name="Content", max_length=2000)
+
+    class Meta:
+        verbose_name = "Service Review"
+        verbose_name_plural = 'Service Reviews'
+        ordering = ['-date_created']

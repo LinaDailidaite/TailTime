@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md">
+            {% if user.photo %}
+            <img src="{{ user.photo.url }}" class="rounded-circle">
+            {% endif %}
+            <p><strong>Username: </strong>{{ user.username }}</p>
+            <p><strong>First Name: </strong>{{ user.first_name }}</p>
+            <p><strong>Last Name: </strong>{{ user.last_name }}</p>
+            <p><strong>Email: </strong>{{ user.email }}</p>
+            <h2 class="mb-4 text-center">Profile</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                {{ form | crispy }}
+                <button type="submit" class="btn btn-primary w-100">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

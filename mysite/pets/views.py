@@ -4,7 +4,15 @@ from .models import Booking, Salon, Service
 from django.views import generic
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.shortcuts import render, reverse
+from .forms import ServiceReviewForm
+from django.views.generic.edit import FormMixin
+from django.views import generic
+from django.contrib.auth.models import User
+from .forms import CustomUserChangeForm
+from .forms import CustomUserCreateForm
 
 def salons(request):
     salons = Salon.objects.all()
@@ -25,10 +33,36 @@ class ServiceListView(generic.ListView):
     context_object_name = "services"
     paginate_by = 6
 
-class ServiceDetailView(generic.DetailView):
+
+class ServiceDetailView(FormMixin, generic.DetailView):
     model = Service
     template_name = "service.html"
     context_object_name = "service"
+    form_class = ServiceReviewForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if 'form' not in context:
+            context['form'] = self.get_form()
+        return context
+
+    def get_success_url(self):
+        return reverse("service", kwargs={"pk": self.object.id})
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.service = self.get_object()
+        form.instance.reviewer = self.request.user
+        form.save()
+        return super().form_valid(form)
+
 
 def index(request):
     num_salons = Salon.objects.all().count()
@@ -71,3 +105,17 @@ class MyBookingListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Booking.objects.filter(user=self.request.user)
+
+
+class SignUpView(generic.CreateView):
+    form_class = CustomUserCreateForm
+    template_name = "signup.html"
+    success_url = reverse_lazy("login")
+
+class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
+    form_class = CustomUserChangeForm
+    template_name = "profile.html"
+    success_url = reverse_lazy('profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user

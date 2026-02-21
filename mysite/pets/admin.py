@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Salon, Service, Booking
+from .models import CustomUser, Salon, Service, Booking, ServiceReview
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
@@ -30,6 +30,11 @@ class BookingAdmin(admin.ModelAdmin):
         ('Availability', {'fields': ('status', 'date_time', 'user')}),
     ]
 
+class ServiceReviewAdmin(admin.ModelAdmin):
+    list_display = ['service', 'date_created', 'reviewer', 'content']
+
+
+admin.site.register(ServiceReview, ServiceReviewAdmin)
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Salon, SalonAdmin)
 admin.site.register(Service, ServiceAdmin)

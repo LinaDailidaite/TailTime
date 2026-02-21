@@ -11,4 +11,5 @@
 {% for service in salon.services.all %}
 <p>{{ service.name }}</p>
 {% endfor %}
+<p>{{ author.description | safe }}</p>
 {% endblock %}
