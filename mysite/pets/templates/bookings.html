@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'booking_create' %}">Nauja rezervacija</a>
+{% for booking in bookings %}
+    <a href="{% url 'booking-detail' booking.pk %}">
+        <p>{{ booking.user }} - {{ booking.salon }} ({{ booking.date_time }}, {{ booking.get_status_display }})</p>
+    </a>
+{% endfor %}
+{% endblock %}

@@ -3,8 +3,37 @@
 {% block title %}My bookings{% endblock %}
 
 {% block content %}
-<h1>My bookings:</h1>
-{% for booking in bookings %}
-<p class="{% if instance.is_overdue %}text-danger{% endif %}">{{ booking.name }} ({{ booking.salon }})</p>
-{% endfor %}
+<div class="container">
+    <h1>Mano užsakymai</h1>
+
+    <h2 class="mt-4">Upcoming</h2>
+    <hr>
+    {% if upcoming_bookings %}
+        {% for booking in upcoming_bookings %}
+            <div class="card mb-2 border-primary">
+                <div class="card-body">
+                    <p class="mb-0"><strong>{{ booking.service.name }}</strong> ({{ booking.salon.name }})</p>
+                    <p class="text-muted mb-0 small">Date: {{ booking.date_time }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You don't have any upcoming bookings.</p>
+    {% endif %}
+
+    <h2 class="mt-5 text-secondary">Past</h2>
+    <hr>
+    {% if past_bookings %}
+        {% for booking in past_bookings %}
+            <div class="card mb-2 bg-light">
+                <div class="card-body">
+                    <p class="mb-0 text-secondary"><s>{{ booking.service.name }} ({{ booking.salon.name }})</s></p>
+                    <p class="text-muted mb-0 small">Happened: {{ booking.date_time }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Past bookings history is empty.</p>
+    {% endif %}
+</div>
 {% endblock %}

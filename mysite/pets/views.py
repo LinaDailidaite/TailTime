@@ -1,18 +1,18 @@
 from django.http import HttpResponse
-from django.shortcuts import render
 from .models import Booking, Salon, Service
 from django.views import generic
 from django.db.models import Q
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.shortcuts import render, reverse
 from .forms import ServiceReviewForm
 from django.views.generic.edit import FormMixin
-from django.views import generic
 from django.contrib.auth.models import User
 from .forms import CustomUserChangeForm
 from .forms import CustomUserCreateForm
+from .forms import BookingCreateUpdateForm
+from django.utils import timezone
 
 def salons(request):
     salons = Salon.objects.all()
@@ -104,8 +104,16 @@ class MyBookingListView(LoginRequiredMixin, generic.ListView):
     context_object_name = "bookings"
 
     def get_queryset(self):
-        return Booking.objects.filter(user=self.request.user)
+        return Booking.objects.filter(user=self.request.user).order_by('date_time')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        now = timezone.now()
+
+        context['upcoming_bookings'] = self.get_queryset().filter(date_time__gte=now)
+        context['past_bookings'] = self.get_queryset().filter(date_time__lt=now)
+
+        return context
 
 class SignUpView(generic.CreateView):
     form_class = CustomUserCreateForm
@@ -119,3 +127,55 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+
+# LIST VIEW
+class BookingListView(LoginRequiredMixin, UserPassesTestMixin, generic.ListView):
+    model = Booking
+    context_object_name = "bookings"
+    template_name = "bookings.html"
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+# DETAIL VIEW
+class BookingDetailView(LoginRequiredMixin, UserPassesTestMixin, generic.DetailView):
+    model = Booking
+    context_object_name = "booking"
+    template_name = "booking_detail.html"
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+# CREATE VIEW
+class BookingCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+    model = Booking
+    template_name = "booking_form.html"
+    form_class = BookingCreateUpdateForm
+    success_url = reverse_lazy('bookings')
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+# UPDATE VIEW
+class BookingUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = Booking
+    template_name = "booking_form.html"
+    form_class = BookingCreateUpdateForm
+
+    def get_success_url(self):
+        return reverse("booking-detail", kwargs={"pk": self.object.pk})
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+# DELETE VIEW
+class BookingDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Booking
+    template_name = "booking_delete.html"
+    context_object_name = "booking"
+    success_url = reverse_lazy('bookings')
+
+    def test_func(self):
+        return self.request.user.is_staff
