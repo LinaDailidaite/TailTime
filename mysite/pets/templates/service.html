@@ -1,32 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Paslauga{% endblock %}
+{% block title %}Service{% endblock %}
 
 {% block content %}
-<p><strong>Pavadinimas: </strong>{{ service.salon }} {{ service.name }}</p>
-<p><strong>Kaina: </strong>{{ service.price }}</p>
-<p>{{ service.description }}</p>
-<h2>Comments:</h2>
-<br/>
+    <h4 class="mb-4 text-center">{{ service.name }}</h4>
+    <div class="service-info"> <p><strong>Kaina: </strong>{{ service.price }} €</p>
+        <p><strong>Aprašymas: </strong></p>
+        <div class="description-text mb-4">
+            {{ service.description | safe }}
+        </div>
+    </div>
 {% if user.is_authenticated %}
 <h2>Leave a comment</h2>
 <form method="post" class="mb-2">
     {% csrf_token %}
     {% load crispy_forms_tags %}
     {{ form | crispy }}
-    <button type="submit" class="btn btn-primary">Publish</button>
+    <button type="submit" class="btn btn-custom">Publish</button>
 </form>
 {% endif %}
 {% if service.reviews.all %}
-{% for review in service.reviews.all %}
-<p>
-    {% if review.reviewer.photo %}
-    <img src="{{ review.reviewer.photo.url }}" class="rounded-circle" style="width: 30px">
-    {% endif %}
-    <strong>{{ review.reviewer }}</strong>, <em>{{ review.date_created }}</em></p>
-<p>{{ review.content }}</p>
-<hr>
-{% endfor %}
+
+<div class="content-section shadow-sm">
+    {% for review in service.reviews.all %}
+    <p>
+        {% if review.reviewer.photo %}
+        <img src="{{ review.reviewer.photo.url }}" class="rounded-circle" style="width: 30px">
+        {% endif %}
+        <strong>{{ review.reviewer }}</strong>, <em>{{ review.date_created }}</em></p>
+    <p>{{ review.content }}</p>
+    <hr>
+    {% endfor %}
+</div>
 {% else %}
 <p>No comments</p>
 {% endif %}

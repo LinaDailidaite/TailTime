@@ -1,3 +1,339 @@
+body, h1, h2, h3, h4, h5, h6, p, a, span, button, input, select {
+    font-family: 'Bebas Neue', sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
 h1 {
-    color: red;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 50px;
+    color: #1A4D2E;
+}
+
+h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 50px;
+    color: #F5EFE6;
+}
+h2, h3 {
+    color: #E8DFCA !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+}
+
+/* Puslapio fonas */
+body {
+    background-color: #4F6F52;
+    color: #333;
+    font-size: 22px;
+    letter-spacing: 0.5px;
+}
+
+/* Antraštės centravimas ir stilius */
+.page-title {
+    text-align: center;
+    color: #F5EFE6;
+    margin-bottom: 40px;
+    font-weight: bold;
+    font-size: 40px;
+    text-transform: uppercase;
+}
+
+/* Kortelės dizainas */
+.salon-card {
+    background-color: #F5EFE6;
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.3s ease; /* Efektas užvedus pelę */
+    width: 100%;
+    max-width: 320px;
+    overflow: hidden; /* Kad nuotrauka neišlystų per suapvalintus kampus */
+    font-size: 18px;
+}
+
+/* Efektas užvedus pelę ant kortelės */
+.salon-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* Nuotraukos fiksavimas (kad visos kortelės būtų lygios) */
+.salon-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Custom Mygtukas */
+.btn-custom {
+    background-color: #1A4D2E;
+    color: #F5EFE6;
+    border-radius: 25px;
+    padding: 8px 20px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.btn-custom:hover {
+    background-color: #E8DFCA;
+    color: #1A4D2E;
+}
+
+/* Viršutinė dalis (kur rašomas pavadinimas) */
+.bg-primary {
+    background-color: #E8DFCA !important;
+    padding: 60px 0 !important;
+}
+
+.bg-primary h1 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 90px !important;
+    color: #1A4D2E !important;
+    letter-spacing: 0px;
+    margin-bottom: 0;
+}
+
+/* navigacijos juosta */
+.navbar.bg-dark {
+    background-color: #1A4D2E !important;
+    border-bottom: 2px solid #F5EFE6; /* linija po navigacija */
+}
+
+/* Navigacijos nuorodos */
+.navbar-dark .navbar-nav .nav-link {
+    color: #F5EFE6 !important;
+    font-size: 1.4rem !important;
+    padding: 10px 20px !important;
+    transition: color 0.3s;
+}
+
+/* Efektas užvedus ant navigacijos nuorodos */
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #E67E22 !important;
+}
+
+/* Aktyvus puslapis navigacijoje */
+.nav-link.active {
+    color: #ff0000 !important;
+}
+
+/* Detalaus vaizdo konteineris */
+.content-section {
+    background-color: #E8DFCA;
+    padding: 30px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Pavadinimų ir reikšmių stilius (MIESTAS: VILNIUS) */
+p strong, .card-text strong {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 25px;
+    color: #00000;
+    letter-spacing: 0.8px;
+}
+
+/* Komentarų antraštė */
+h2, h3, .comments-title {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 2.5rem !important;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Mygtukas "Publish" */
+.btn-primary {
+    background-color: #ff0000 !important;
+    border: none !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.2rem !important;
+    padding: 8px 30px !important;
+    letter-spacing: 2px;
+    border-radius: 5px !important;
+}
+
+.btn-primary:hover {
+    background-color: #cc0000 !important;
+}
+
+.form-control {
+    border-radius: 0 !important;
+    border: 1px solid #333 !important;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+}
+
+.form-control::placeholder {
+    color: #999;
+}
+
+.btn-service-badge {
+    display: inline-block !important;
+    background-color: #1A4D2E !important;
+    color: #E8DFCA !important;
+    padding: 10px 20px !important;
+    margin: 5px !important;
+    text-decoration: none !important;
+    border-radius: 5px !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 20px;
+}
+
+.btn-service-badge:hover {
+    background-color: #4F6F52 !important;
+    color: #fff !important;
+}
+
+/* Apvali salono nuotrauka */
+.salon-image-round {
+    width: 250px;
+    height: 250px;
+    border-radius: 5%;
+    object-fit: cover;
+    border: 5px solid #1A4D2E;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Puslapiavimo nuorodų spalva */
+.pagination a, .step-links a {
+    color: #E8DFCA !important;
+    text-decoration: none !important;
+}
+
+.pagination a:hover {
+    text-decoration: underline !important;
+}
+
+.step-links {
+    color: #E8DFCA !important;
+}
+
+ul {
+    list-style-type: none !important;
+    padding-left: 0 !important;
+}
+
+/* paslaugos detalių puslapio antraštė */
+.service-title-custom {
+    color: #F5EFE6 !important;
+}
+
+.service-info p,
+.service-info .description-text {
+    color: #E8DFCA !important;
+}
+
+.service-info label,
+form label,
+.control-label,
+.form-label {
+    color: #E8DFCA !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.2rem;
+}
+
+/* Užsakymų kortelių konteineris */
+.booking-card {
+    background-color: #F5EFE6;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s;
+    border-left: 8px solid #1A4D2E;
+}
+
+.booking-card:hover {
+    transform: scale(1.01);
+}
+
+.booking-salon {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.8rem;
+    color: #1A4D2E;
+    margin-bottom: 5px;
+}
+
+.booking-info {
+    font-size: 1.1rem;
+    color: #333;
+    margin: 0;
+}
+
+/* Statuso ženkliukas */
+.status-badge {
+    background-color: #E8DFCA;
+    color: #1A4D2E;
+    border-radius: 25px;
+    padding: 8px 20px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.status-confirmed { background-color: #d4edda; color: #155724; }
+.status-pending { background-color: #fff3cd; color: #856404; }
+
+.booking-status-section {
+    display: flex;
+    align-items: center;
+}
+
+/* Konteineris */
+.services-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+/* Kiekvienos paslaugos dėžutė */
+.service-item {
+    flex: 1 1 calc(33.333% - 20px);
+    min-width: 250px;
+}
+
+.service-link {
+    text-decoration: none !important;
+}
+
+.service-box {
+    background-color: #F5EFE6;
+    border: 2px solid #E8DFCA;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    color: #1A4D2E;
+}
+
+.service-box:hover {
+    background-color: #1A4D2E;
+    color: #F5EFE6;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.service-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.service-price {
+    background: rgba(26, 77, 46, 0.1);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 900;
+}
+
+.service-box:hover .service-price {
+    background: rgba(255, 255, 255, 0.2);
 }

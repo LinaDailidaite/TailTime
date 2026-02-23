@@ -155,8 +155,26 @@ class BookingCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateV
     form_class = BookingCreateUpdateForm
     success_url = reverse_lazy('bookings')
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['salon_id'] = self.kwargs.get('salon_id')
+        return kwargs
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['salon'] = self.kwargs.get('salon_id')
+        return initial
+
     def test_func(self):
         return self.request.user.is_staff
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        salon_id = self.kwargs.get('salon_id')
+        if salon_id:
+            context['selected_salon'] = Salon.objects.get(pk=salon_id)
+        return context
+
 
 # UPDATE VIEW
 class BookingUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
@@ -169,6 +187,11 @@ class BookingUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateV
 
     def test_func(self):
         return self.request.user.is_staff
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['salon_id'] = self.get_object().salon.id
+        return kwargs
 
 # DELETE VIEW
 class BookingDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):

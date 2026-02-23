@@ -3,19 +3,28 @@
 {% block title %}Paslaugos{% endblock %}
 
 {% block content %}
-  <h1>Mūsų paslaugos:</h1>
-  {% if services %}
-  <ul>
-    {% for service in services %}
-      <li>
-        <a href="{{ service.id }}">{{ service.name }}</a> ({{ service.price }})
-      </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-    <p>Paslaugų nėra.</p>
-  {% endif %}
-  <div class="pagination">
+<div class="container mt-4">
+    <h1 class="page-title mb-4">Mūsų paslaugos:</h1>
+
+    {% if services %}
+    <div class="services-wrapper">
+        {% for service in services %}
+            <div class="service-item">
+                <a href="{% url 'service' service.id %}" class="service-link">
+                    <div class="service-box">
+                        <span class="service-name">{{ service.name }}</span>
+                        <span class="service-price">{{ service.price }}€</span>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>Paslaugų nėra.</p>
+    {% endif %}
+
+
+  <div class="pagination mt-5 d-flex justify-content-center">
     <span class="step-links">
         {% if page_obj.has_previous %}
             <a href="?page=1">&laquo; pirmas</a>
@@ -31,5 +40,6 @@
             <a href="?page={{ page_obj.paginator.num_pages }}">paskutinis &raquo;</a>
         {% endif %}
     </span>
+</div>
 </div>
 {% endblock %}

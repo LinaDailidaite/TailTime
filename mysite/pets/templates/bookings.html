@@ -1,9 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
-<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'booking_create' %}">Nauja rezervacija</a>
-{% for booking in bookings %}
-    <a href="{% url 'booking-detail' booking.pk %}">
-        <p>{{ booking.user }} - {{ booking.salon }} ({{ booking.date_time }}, {{ booking.get_status_display }})</p>
-    </a>
-{% endfor %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title m-0">Visi užsakymai</h2>
+        <a class="btn btn-custom" href="{% url 'salons' %}">+ Naujas užsakymas</a>
+    </div>
+
+    <div class="bookings-list">
+        {% for booking in bookings %}
+            <div class="booking-card shadow-sm mb-3">
+                <div class="booking-details">
+                    <h5 class="booking-salon">{{ booking.salon }}</h5>
+                    <p class="booking-info">
+                        <strong>Klientas:</strong> {{ booking.user }}<br>
+                        <strong>Data:</strong> {{ booking.date_time }}
+                    </p>
+                </div>
+                <div class="booking-status-section">
+                    <span class="status-badge status-{{ booking.status }}">
+                        {{ booking.get_status_display }}
+                    </span>
+                    <a href="{% url 'booking-detail' booking.pk %}" class="btn btn-custom btn-sm">Peržiūrėti</a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="text-center">
+                <p>Užsakymų kol kas nėra.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
