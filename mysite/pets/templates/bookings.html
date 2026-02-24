@@ -5,7 +5,26 @@
         <h2 class="page-title m-0">Visi užsakymai</h2>
         <a class="btn btn-custom" href="{% url 'salons' %}">+ Naujas užsakymas</a>
     </div>
+<div class="container mb-4">
+    <form method="get" class="row g-3 align-items-end shadow-sm p-3 rounded" style="background-color: rgba(26, 58, 50, 0.4);">
+        <div class="col-md-3">
+            <label for="date_from" class="form-label fw-bold" style="color: #E8DFCA;">Nuo:</label>
+            <input type="date" name="date_from" id="date_from" class="form-control" value="{{ date_from }}">
+        </div>
 
+        <div class="col-md-3">
+            <label for="date_to" class="form-label fw-bold" style="color: #E8DFCA;">Iki:</label>
+            <input type="date" name="date_to" id="date_to" class="form-control" value="{{ date_to }}">
+        </div>
+
+        <div class="col-md-4 d-flex gap-2">
+            <button type="submit" class="btn btn-success" style="background-color: #1a3a32; border-color: #E8DFCA; color: #E8DFCA;">
+                Filtruoti laikotarpį
+            </button>
+            <a href="{% url 'bookings' %}" class="btn btn-outline-light">Rodyti visus</a>
+        </div>
+    </form>
+</div>
     <div class="bookings-list">
         {% for booking in bookings %}
             <div class="booking-card shadow-sm mb-3">

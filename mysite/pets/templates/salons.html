@@ -7,7 +7,26 @@
 
 <div class="salons-container">
     <h1 class="page-title">Mūsų salonai:</h1>
-
+<div class="container mb-4">
+    <form method="get" class="row g-3 align-items-center">
+        <div class="col-auto">
+            <label for="city" class="form-label mb-0 fw-bold" style="color: #E8DFCA;">Filtruoti pagal miestą:</label>
+        </div>
+        <div class="col-auto">
+            <select name="city" id="city" class="form-select" onchange="this.form.submit()">
+                <option value="">Visi miestai</option>
+                {% for city in cities %}
+                    <option value="{{ city }}" {% if selected_city == city %}selected{% endif %}>
+                        {{ city }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-auto">
+            <a href="{% url 'salons' %}" class="btn btn-outline-light btn-sm">Išvalyti</a>
+        </div>
+    </form>
+</div>
     <div class="row justify-content-center g-4"> {% for salon in salons %}
         <div class="col-md-4 d-flex align-items-stretch justify-content-center">
             <div class="card salon-card shadow-sm"> {% if salon.image %}

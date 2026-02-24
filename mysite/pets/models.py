@@ -54,7 +54,8 @@ class Salon(models.Model):
     display_services.short_description = 'services'
 
 class Service(models.Model):
-    salon = models.ForeignKey(Salon, verbose_name="Salon", on_delete=models.SET_NULL, null=True, blank=True, related_name="services")
+    # Laukas turi būti čia, ne vidinėje klasėje
+    salon = models.ManyToManyField(Salon, verbose_name="Salon", blank=True, related_name="services")
     name = models.CharField(verbose_name="Name", max_length=200)
     description = models.TextField(verbose_name="Description", max_length=500)
     price = models.DecimalField(verbose_name="Price", max_digits=10, decimal_places=0)

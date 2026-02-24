@@ -15,11 +15,17 @@ from .forms import BookingCreateUpdateForm
 from django.utils import timezone
 
 def salons(request):
+    cities = Salon.objects.values_list('city', flat=True).distinct()
+    selected_city = request.GET.get('city')
     salons = Salon.objects.all()
+    if selected_city:
+        salons = salons.filter(city=selected_city)
+
     context = {
-        'salons': salons
+        'salons': salons,
+        'cities': cities,
+        'selected_city': selected_city,
     }
-    print(salons)
     return render(request, template_name='salons.html', context=context)
 
 
@@ -136,6 +142,22 @@ class BookingListView(LoginRequiredMixin, UserPassesTestMixin, generic.ListView)
     context_object_name = "bookings"
     template_name = "bookings.html"
 
+    def get_queryset(self):
+        queryset = Booking.objects.all().order_by('date_time')
+        date_from = self.request.GET.get('date_from')
+        date_to = self.request.GET.get('date_to')
+        if date_from:
+            queryset = queryset.filter(date_time__date__gte=date_from)
+        if date_to:
+            queryset = queryset.filter(date_time__date__lte=date_to)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['date_from'] = self.request.GET.get('date_from')
+        context['date_to'] = self.request.GET.get('date_to')
+        return context
+
     def test_func(self):
         return self.request.user.is_staff
 
@@ -146,19 +168,28 @@ class BookingDetailView(LoginRequiredMixin, UserPassesTestMixin, generic.DetailV
     template_name = "booking_detail.html"
 
     def test_func(self):
-        return self.request.user.is_staff
+        return self.request.user.is_authenticated
 
 # CREATE VIEW
 class BookingCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     model = Booking
     template_name = "booking_form.html"
     form_class = BookingCreateUpdateForm
-    success_url = reverse_lazy('bookings')
+    success_url = reverse_lazy('mybookings')
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['salon_id'] = self.kwargs.get('salon_id')
+        kwargs['request_user'] = self.request.user
         return kwargs
+
+    def form_valid(self, form):
+        if form.cleaned_data['date_time'] < timezone.now():
+            form.add_error('date_time', "Can't book time in the past")
+            return self.form_invalid(form)
+        if not self.request.user.is_staff:
+            form.instance.user = self.request.user
+        return super().form_valid(form)
 
     def get_initial(self):
         initial = super().get_initial()
@@ -166,7 +197,7 @@ class BookingCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateV
         return initial
 
     def test_func(self):
-        return self.request.user.is_staff
+        return self.request.user.is_authenticated
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -186,7 +217,7 @@ class BookingUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateV
         return reverse("booking-detail", kwargs={"pk": self.object.pk})
 
     def test_func(self):
-        return self.request.user.is_staff
+        return self.request.user.is_authenticated
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()

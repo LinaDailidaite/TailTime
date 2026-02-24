@@ -5,9 +5,22 @@
 {% block content %}
     <h4 class="mb-4 text-center">{{ service.name }}</h4>
     <div class="service-info"> <p><strong>Kaina: </strong>{{ service.price }} €</p>
+        <p><strong>Salonai teikiantys šią paslaugą: </strong>{{ service.salon.all|join:", " }} </p>
         <p><strong>Aprašymas: </strong></p>
         <div class="description-text mb-4">
             {{ service.description | safe }}
+        </div>
+        <div class="mt-4">
+            <h5 class="fw-bold">Salonai teikiantys šią paslaugą:</h5>
+            <div class="services-container mb-4">
+            {% for s in service.salon.all %}
+                <a href="{% url 'salon' s.id %}" class="btn btn-service-badge">
+                    {{ s.name }} ({{ s.city }})
+                </a>
+            {% empty %}
+                <p class="text-muted">Salonų, teikiančių šią paslaugą, nėra.</p>
+            {% endfor %}
+            </div>
         </div>
     </div>
 {% if user.is_authenticated %}
