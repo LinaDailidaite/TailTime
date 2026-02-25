@@ -1,12 +1,16 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
-<h1>Rezervacija: {{ booking.user }}</h1>
-<p>Salonas: {{ booking.salon.name }}</p>
-<p>Paslauga: {{ booking.service.name }}</p>
-<p>Laikas: {{ booking.date_time }}</p>
-<p>Būsena: {{ booking.get_status_display }}</p>
+<div class="service-info"> <h2>{% trans "Booking:" %} {{ booking.user }}</h2>
+    <p><strong>{% trans "Pet:" %}</strong> {{ booking.pet }}</p>
+    <p><strong>{% trans "Pet name:" %}</strong> {{ booking.pet_name }}</p>
+    <p><strong>{% trans "Salon:" %}</strong> {{ booking.salon.name }}</p>
+    <p><strong>{% trans "Service:" %}</strong> {{ booking.service.name }}</p>
+    <p><strong>{% trans "Date:" %}</strong> {{ booking.date_time }}</p>
+    <p><strong>{% trans "Status:" %}</strong> {{ booking.get_status_display }}</p>
+</div>
 <div>
-    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'booking_update' booking.pk %}">Redaguoti</a>
-    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'booking_delete' booking.pk %}">Ištrinti</a>
+    <a class="btn btn-custom btn-sm mt-1 mb-1" href="{% url 'booking_update' booking.pk %}">{% trans "Edit" %}</a>
+    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'booking_delete' booking.pk %}">{% trans "Delete" %}</a>
 </div>
 {% endblock %}

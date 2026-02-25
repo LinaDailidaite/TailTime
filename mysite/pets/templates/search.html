@@ -1,25 +1,30 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Paieškos rezultatai{% endblock %}
+{% block title %}{% trans "Search results" %}{% endblock %}
 
 {% block content %}
-<h1>Services found: "{{ query }}":</h1>
+<h1>
+    {% blocktrans with query=query %}Services found: "{{ query }}":{% endblocktrans %}
+</h1>
 <br>
 {% if services %}
-{% for service in services %}
-<p><a href="{% url 'service' service.pk %}">{{ service }}</a></p>
-{% endfor %}
+    {% for service in services %}
+        <p><a href="{% url 'service' service.pk %}">{{ service }}</a></p>
+    {% endfor %}
 {% else %}
-<p>Oops. Couldn't find anything.</p>
+    <p>{% trans "Oops. Couldn't find anything." %}</p>
 {% endif %}
-<h1>Salons found: "{{ query }}":</h1>
+
+<h1>
+    {% blocktrans with query=query %}Salons found: "{{ query }}":{% endblocktrans %}
+</h1>
 <br>
 {% if salons %}
-{% for salon in salons %}
-<p><a href="{% url 'salon' salon.pk %}">{{ salon }}</a></p>
-
-{% endfor %}
+    {% for salon in salons %}
+        <p><a href="{% url 'salon' salon.pk %}">{{ salon }}</a></p>
+    {% endfor %}
 {% else %}
-<p>Oops. Couldn't find anything.</p>
+    <p>{% trans "Oops. Couldn't find anything." %}</p>
 {% endif %}
 {% endblock %}

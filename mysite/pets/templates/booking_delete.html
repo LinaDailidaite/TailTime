@@ -1,10 +1,10 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
 <form method="POST">
     {% csrf_token %}
-    <legend class="border-bottom mb-4">Ištrinti rezervaciją</legend>
-    <h2>Ar tikrai norite ištrinti {{ booking.user }} rezervaciją?</h2>
-    <button class="btn btn-outline-danger" type="submit">Taip, ištrinti</button>
-    <a class="btn btn-outline-secondary" href="{% url 'booking-detail' booking.pk %}">Atšaukti</a>
+    <h2>{% blocktrans with user=booking.user %}Are you sure you want to delete {{ user }} reservation?{% endblocktrans %}</h2>
+    <button class="btn btn-danger" type="submit">{% trans "Yes, delete" %}</button>
+    <a class="btn btn-custom" href="{% url 'booking-detail' booking.pk %}">{% trans "Cancel" %}</a>
 </form>
 {% endblock %}

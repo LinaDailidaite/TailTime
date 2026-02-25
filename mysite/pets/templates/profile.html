@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}{% trans "Profile" %}{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
@@ -10,17 +11,17 @@
             <img src="{{ user.photo.url }}" class="rounded-circle">
             {% endif %}
             <div class="profile-section">
-            <p><strong>Username: </strong>{{ user.username }}</p>
-            <p><strong>First Name: </strong>{{ user.first_name }}</p>
-            <p><strong>Last Name: </strong>{{ user.last_name }}</p>
-            <p><strong>Email: </strong>{{ user.email }}</p>
+            <p><strong>{% trans "Username:" %} </strong>{{ user.username }}</p>
+            <p><strong>{% trans "First Name:" %} </strong>{{ user.first_name }}</p>
+            <p><strong>{% trans "Last Name:" %} </strong>{{ user.last_name }}</p>
+            <p><strong>{% trans "Email:" %} </strong>{{ user.email }}</p>
             </div>
-            <h2 class="mb-4 text-center">Update profile</h2>
+            <h2 class="mb-4 text-center">{% trans "Update profile" %}</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% load crispy_forms_tags %}
                 {{ form | crispy }}
-                <button type="submit" class="btn btn-custom w-100">Update</button>
+                <button type="submit" class="btn btn-custom w-100">{% trans "Update" %}</button>
             </form>
         </div>
     </div>

@@ -20,6 +20,13 @@ h2, h3 {
     font-family: 'Bebas Neue', sans-serif !important;
 }
 
+h5 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 25px;
+    color: #E8DFCA;
+    letter-spacing: 1px;
+}
+
 /* Puslapio fonas */
 body {
     background-color: #4F6F52;
@@ -65,7 +72,7 @@ body {
 /* Custom Mygtukas */
 .btn-custom {
     background-color: #1A4D2E;
-    color: #F5EFE6;
+    color: #E8DFCA;
     border-radius: 25px;
     padding: 8px 20px;
     border: none;
@@ -78,6 +85,23 @@ body {
 .btn-custom:hover {
     background-color: #E8DFCA;
     color: #1A4D2E;
+}
+
+.btn-danger {
+    background-color: #C3110C;
+    color: #E8DFCA;
+    border-radius: 25px;
+    padding: 8px 20px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 20px;
+}
+
+.btn-danger:hover {
+    background-color: #740A03;
+    color: #E8DFCA;
 }
 
 /* Viršutinė dalis (kur rašomas pavadinimas) */
@@ -131,7 +155,7 @@ p strong, .card-text strong {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 25px;
     color: #00000;
-    letter-spacing: 0.8px;
+    letter-spacing: 1.5px;
 }
 
 /* Komentarų antraštė */
@@ -158,6 +182,7 @@ h2, h3, .comments-title {
     background-color: #cc0000 !important;
 }
 
+
 .form-control {
     border-radius: 0 !important;
     border: 1px solid #333 !important;
@@ -167,6 +192,30 @@ h2, h3, .comments-title {
 
 .form-control::placeholder {
     color: #999;
+}
+
+input.form-control,
+select.form-select,
+input[type="text"],
+input[type="datetime-local"] {
+    color: #1A4D2E !important; /* Tamsiai žalia tekstui (kad matytųsi) */
+    background-color: #ffffff !important; /* Balta fonui */
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 20px !important;
+}
+
+/* Sutvarkom Placeholder spalvą (tekstas, kuris matosi kol nieko neįrašyta) */
+input::placeholder {
+    color: #6c757d !important; /* Pilka spalva placeholderiui */
+    opacity: 1 !important;
+}
+
+/* Kad matytųsi tekstas, kai laukelis fokusuojamas (paspaudžiamas) */
+input:focus {
+    color: #1A4D2E !important;
+    background-color: #ffffff !important;
+    border-color: #4F6F52 !important;
+    outline: none !important;
 }
 
 .btn-service-badge {
@@ -365,4 +414,20 @@ form label,
 .form-select {
     max-width: 200px;
     border: 1px solid #ced4da;
+}
+
+.custom-reset-link {
+    color: #E8DFCA;
+}
+
+.custom-reset-link:hover {
+    color: #E67E22;
+}
+
+.btn-link {
+    color: #E8DFCA;
+}
+
+.btn-link:hover {
+    color: #E67E22;
 }

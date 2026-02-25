@@ -1,27 +1,31 @@
 {% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "All bookings" %}{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="page-title m-0">Visi užsakymai</h2>
-        <a class="btn btn-custom" href="{% url 'salons' %}">+ Naujas užsakymas</a>
+        <h2 class="page-title m-0">{% trans "All bookings" %}</h2>
+        <a class="btn btn-custom" href="{% url 'salons' %}">{% trans "+ New booking" %}</a>
     </div>
 <div class="container mb-4">
     <form method="get" class="row g-3 align-items-end shadow-sm p-3 rounded" style="background-color: rgba(26, 58, 50, 0.4);">
         <div class="col-md-3">
-            <label for="date_from" class="form-label fw-bold" style="color: #E8DFCA;">Nuo:</label>
+            <label for="date_from" class="form-label fw-bold" style="color: #E8DFCA;">{% trans "Start date:" %}</label>
             <input type="date" name="date_from" id="date_from" class="form-control" value="{{ date_from }}">
         </div>
 
         <div class="col-md-3">
-            <label for="date_to" class="form-label fw-bold" style="color: #E8DFCA;">Iki:</label>
+            <label for="date_to" class="form-label fw-bold" style="color: #E8DFCA;">{% trans "End date:" %}</label>
             <input type="date" name="date_to" id="date_to" class="form-control" value="{{ date_to }}">
         </div>
 
         <div class="col-md-4 d-flex gap-2">
             <button type="submit" class="btn btn-success" style="background-color: #1a3a32; border-color: #E8DFCA; color: #E8DFCA;">
-                Filtruoti laikotarpį
+                {% trans "Filter between selected dates" %}
             </button>
-            <a href="{% url 'bookings' %}" class="btn btn-outline-light">Rodyti visus</a>
+            <a href="{% url 'bookings' %}" class="btn btn-outline-light">{% trans "Show all" %}</a>
         </div>
     </form>
 </div>
@@ -31,20 +35,20 @@
                 <div class="booking-details">
                     <h5 class="booking-salon">{{ booking.salon }}</h5>
                     <p class="booking-info">
-                        <strong>Klientas:</strong> {{ booking.user }}<br>
-                        <strong>Data:</strong> {{ booking.date_time }}
+                        <strong>{% trans "Client:" %}</strong> {{ booking.user }}<br>
+                        <strong>{% trans "Date:" %}</strong> {{ booking.date_time }}
                     </p>
                 </div>
                 <div class="booking-status-section">
                     <span class="status-badge status-{{ booking.status }}">
                         {{ booking.get_status_display }}
                     </span>
-                    <a href="{% url 'booking-detail' booking.pk %}" class="btn btn-custom btn-sm">Peržiūrėti</a>
+                    <a href="{% url 'booking-detail' booking.pk %}" class="btn btn-custom btn-sm">{% trans "See more" %}</a>
                 </div>
             </div>
         {% empty %}
             <div class="text-center">
-                <p>Užsakymų kol kas nėra.</p>
+                <p>{% trans "There are no bookings yet." %}</p>
             </div>
         {% endfor %}
     </div>

@@ -13,6 +13,7 @@ from .forms import CustomUserChangeForm
 from .forms import CustomUserCreateForm
 from .forms import BookingCreateUpdateForm
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 def salons(request):
     cities = Salon.objects.values_list('city', flat=True).distinct()
@@ -73,7 +74,7 @@ class ServiceDetailView(FormMixin, generic.DetailView):
 def index(request):
     num_salons = Salon.objects.all().count()
     num_services = Service.objects.all().count()
-    num_bookings_in_progress = Booking.objects.filter(status__exact='p').count()
+    num_bookings_done = Booking.objects.filter(status__exact='d').count()
     num_visits = request.session.get('num_visits', 1)
     request.session['num_visits'] = num_visits + 1
 
@@ -81,7 +82,7 @@ def index(request):
     context = {
         'num_salons': num_salons,
         'num_services': num_services,
-        'num_bookings_in_progress': num_bookings_in_progress,
+        'num_bookings_done': num_bookings_done,
         'num_visits': num_visits,
     }
 
@@ -123,7 +124,7 @@ class MyBookingListView(LoginRequiredMixin, generic.ListView):
 
 class SignUpView(generic.CreateView):
     form_class = CustomUserCreateForm
-    template_name = "signup.html"
+    template_name = "registration/signup.html"
     success_url = reverse_lazy("login")
 
 class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
@@ -185,7 +186,7 @@ class BookingCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateV
 
     def form_valid(self, form):
         if form.cleaned_data['date_time'] < timezone.now():
-            form.add_error('date_time', "Can't book time in the past")
+            form.add_error('date_time', _("Can't book time in the past"))
             return self.form_invalid(form)
         if not self.request.user.is_staff:
             form.instance.user = self.request.user

@@ -1,19 +1,16 @@
-from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.db.models import IntegerField
 from django.utils import timezone
-from django.contrib import admin
 from tinymce.models import HTMLField
 from PIL import Image
-from django.conf import settings
 import os
 from django.utils.translation import gettext_lazy as _
 
 class CustomUser(AbstractUser):
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
-    is_salon_owner = models.BooleanField(default=False)
-    photo = models.ImageField(("Photo"), upload_to="profile_pics", null=True, blank=True)
+    # Pridėtas _() prie verbose_name ir kitų laukų
+    phone_number = models.CharField(_("Phone number"), max_length=15, blank=True, null=True)
+    is_salon_owner = models.BooleanField(_("Is salon owner"), default=False)
+    photo = models.ImageField(_("Photo"), upload_to="profile_pics", null=True, blank=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -29,17 +26,16 @@ class CustomUser(AbstractUser):
             img.save(self.photo.path)
 
     class Meta:
-        verbose_name = ("User")
-        verbose_name_plural = ("Users")
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
 
 class Salon(models.Model):
-    name = models.CharField(verbose_name="Name", max_length=200)
-    city = models.CharField(verbose_name="City", max_length=50)
-    address = models.CharField(verbose_name="Address", max_length=100)
-    description = HTMLField(verbose_name="Description", max_length=3000, default="")
-    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Owner")
-    image = models.ImageField('Image', upload_to='Images', null=True, blank=True)
-
+    name = models.CharField(verbose_name=_("Name"), max_length=200)
+    city = models.CharField(verbose_name=_("City"), max_length=50)
+    address = models.CharField(verbose_name=_("Address"), max_length=100)
+    description = HTMLField(verbose_name=_("Description"), max_length=3000, default="")
+    owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name=_("Owner"))
+    image = models.ImageField(_('Image'), upload_to='Images', null=True, blank=True)
 
     class Meta:
         verbose_name = _('Salon')
@@ -51,15 +47,14 @@ class Salon(models.Model):
     def display_services(self):
         return ', '.join(service.name for service in self.services.all())
 
-    display_services.short_description = 'services'
+    display_services.short_description = _('Services')
 
 class Service(models.Model):
-    # Laukas turi būti čia, ne vidinėje klasėje
-    salon = models.ManyToManyField(Salon, verbose_name="Salon", blank=True, related_name="services")
-    name = models.CharField(verbose_name="Name", max_length=200)
-    description = models.TextField(verbose_name="Description", max_length=500)
-    price = models.DecimalField(verbose_name="Price", max_digits=10, decimal_places=0)
-    duration_time = models.IntegerField(verbose_name="Duration Time (min)")
+    salon = models.ManyToManyField(Salon, verbose_name=_("Salon"), blank=True, related_name="services")
+    name = models.CharField(verbose_name=_("Name"), max_length=200)
+    description = models.TextField(verbose_name=_("Description"), max_length=500)
+    price = models.DecimalField(verbose_name=_("Price"), max_digits=10, decimal_places=0)
+    duration_time = models.IntegerField(verbose_name=_("Duration Time (min)"))
 
     class Meta:
         verbose_name = _('Service')
@@ -69,12 +64,12 @@ class Service(models.Model):
         return f"{self.name} - {self.price}€"
 
 class Booking(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="User", null=True, blank=True)
-    salon = models.ForeignKey(Salon, on_delete=models.CASCADE, verbose_name="Salon")
-    service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name="Service")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name=_("User"), null=True, blank=True)
+    pet = models.CharField(max_length=50, verbose_name=_("Pet (e.g. dog, cat, rabbit)"))
+    pet_name = models.CharField(max_length=50, verbose_name=_("Pet name"))
+    salon = models.ForeignKey(Salon, on_delete=models.CASCADE, verbose_name=_("Salon"))
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name=_("Service"))
     date_time = models.DateTimeField(verbose_name=_("Date"), null=True, blank=True)
-    def previous_booking(self):
-        return self.date_time and timezone.now().date() > self.date_time
 
     LOAN_STATUS = (
         ('c', _('Confirmed')),
@@ -92,17 +87,20 @@ class Booking(models.Model):
         help_text=_('Booking status'),
     )
 
+    class Meta:
+        verbose_name = _('Booking')
+        verbose_name_plural = _('Bookings')
+
     def __str__(self):
         return f"{self.user} - {self.salon} ({self.date_time} {self.status})"
 
-
 class ServiceReview(models.Model):
-    service = models.ForeignKey(to="service", verbose_name="service", on_delete=models.SET_NULL, null=True, blank=True, related_name="reviews")
-    reviewer = models.ForeignKey(to=CustomUser, verbose_name="Reviewer", on_delete=models.SET_NULL, null=True, blank=True)
-    date_created = models.DateTimeField(verbose_name="Date Created", auto_now_add=True)
-    content = models.TextField(verbose_name="Content", max_length=2000)
+    service = models.ForeignKey(to="Service", verbose_name=_("Service"), on_delete=models.SET_NULL, null=True, blank=True, related_name="reviews")
+    reviewer = models.ForeignKey(to=CustomUser, verbose_name=_("Reviewer"), on_delete=models.SET_NULL, null=True, blank=True)
+    date_created = models.DateTimeField(verbose_name=_("Date Created"), auto_now_add=True)
+    content = models.TextField(verbose_name=_("Content"), max_length=2000)
 
     class Meta:
-        verbose_name = "Service Review"
-        verbose_name_plural = 'Service Reviews'
+        verbose_name = _("Service Review")
+        verbose_name_plural = _('Service Reviews')
         ordering = ['-date_created']

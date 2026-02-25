@@ -1,21 +1,22 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
 <div class="content-section">
     <form method="POST">
         {% csrf_token %}
         {% load crispy_forms_tags %}
-        <legend class="border-bottom mb-4">Rezervacija</legend>
+        <legend class="border-bottom mb-4">{% trans "Booking" %}</legend>
 
         {% if selected_salon %}
             <div class="alert alert-info shadow-sm" style="background-color: #F5EFE6; border-left: 5px solid #1A4D2E; color: #1A4D2E;">
-                <i class="bi bi-shop"></i> <strong>Salonas:</strong> {{ selected_salon.name }}
+                <i class="bi bi-shop"></i> <strong>{% trans "Salon:" %}</strong> {{ selected_salon.name }}
                 <br>
                 <small class="text-muted"><i class="bi bi-geo-alt"></i> {{ selected_salon.city }}, {{ selected_salon.address }}</small>
             </div>
         {% endif %}
 
         {{ form | crispy }}
-        <button class="btn btn-custom" type="submit">Išsaugoti</button>
+        <button class="btn btn-custom" type="submit">{% trans "Save" %}</button>
     </form>
 </div>
 {% endblock %}

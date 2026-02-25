@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +16,6 @@
 <body>
 <div class="p-5 bg-primary text-white text-center">
     <h1>Tail Time</h1>
-    <p>Demo projektas!</p>
 </div>
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -27,19 +27,39 @@
         <div class="collapse navbar-collapse" id="mynavbar">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'index' %}">HOME</a>
+                    <a class="nav-link" href="{% url 'index' %}">{% trans "HOME" %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'salons' %}">Salons</a>
+                    <a class="nav-link" href="{% url 'salons' %}">{% trans "Salons" %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'services' %}">Services</a>
+                    <a class="nav-link" href="{% url 'services' %}">{% trans "Services" %}</a>
+                </li>
+                <li class="nav-item d-flex align-items-center ms-lg-3">
+                    <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ redirect_to }}"/>
+
+                        <select name="language"
+                                class="form-select form-select-sm border-0 bg-transparent text-white fw-bold shadow-none"
+                                style="cursor: pointer; width: auto; font-family: 'Bebas Neue', sans-serif;"
+                                onchange="this.form.submit()">
+
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% for lang in LANGUAGES %}
+                                <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %} class="text-dark">
+                                    {{ lang.0|upper }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </form>
                 </li>
             </ul>
 
             <div class="d-flex align-items-center">
                 <form action="{% url 'search' %}" method="get" class="d-flex me-3">
-                    <input name="query" class="form-control me-2" type="text" placeholder="Search">
+                    <input name="query" class="form-control me-2" type="text" placeholder="{% trans 'Search' %}">
                 </form>
 
                 <ul class="navbar-nav">
@@ -53,26 +73,26 @@
                             {{ user.get_username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                            <li><a class="dropdown-item" href="{% url 'profile' %}">My Profile</a></li>
-                            <li><a class="dropdown-item" href="{% url 'mybookings' %}">My Bookings</a></li>
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">{% trans "My Profile" %}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'mybookings' %}">{% trans "My Bookings" %}</a></li>
 
                             {% if user.is_staff %}
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-warning" href="{% url 'bookings' %}">Admin: All Bookings</a></li>
+                            <li><a class="dropdown-item text-warning" href="{% url 'bookings' %}">{% trans "Admin: All Bookings" %}</a></li>
                             {% endif %}
 
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="post" action="{% url 'logout' %}" class="px-3">
                                     {% csrf_token %}
-                                    <button class="btn btn-sm btn-danger w-100" type="submit">Logout</button>
+                                    <button class="btn btn-sm btn-custom d-block mx-auto" type="submit">{% trans "Logout" %}</button>
                                 </form>
                             </li>
                         </ul>
                     </li>
                     {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Signup</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">{% trans "Login" %}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">{% trans "Signup" %}</a></li>
                     {% endif %}
                 </ul>
             </div>

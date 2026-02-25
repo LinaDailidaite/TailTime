@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Salonas - {{ salon.name }}{% endblock %}
+{% block title %}{{ salon.name }}{% endblock %}
 
 {% block content %}
 <div class="content-section shadow-sm">
@@ -11,15 +12,13 @@
     <div class="text-center mb-4">
         {% if salon.image %}
             <img src="{{ salon.image.url }}" alt="{{ salon.name }}" class="salon-image-round mx-auto">
-        {% else %}
-            <div class="salon-image-placeholder mx-auto">Nėra nuotraukos</div>
         {% endif %}
     </div>
 
     <div class="salon-details">
-        <p><strong>Miestas: </strong>{{ salon.city }}</p>
-        <p><strong>Adresas: </strong>{{ salon.address }}</p>
-        <p><strong>Aprašymas: </strong></p>
+        <p><strong>{% trans "City:" %} </strong>{{ salon.city }}</p>
+        <p><strong>{% trans "Address:" %} </strong>{{ salon.address }}</p>
+        <p><strong>{% trans "Description:" %} </strong></p>
         <div class="description-text mb-4">
             {{ salon.description | safe }}
         </div>
@@ -27,20 +26,20 @@
 
     <hr>
 
-    <h1 class="mt-4">Mūsų teikiamos paslaugos:</h1>
+    <h1 class="mt-4">{% trans "Our services:" %}</h1>
     <div class="services-container mb-4">
         {% for service in salon.services.all %}
             <a href="{% url 'service' service.id %}" class="btn btn-service-badge">
                 {{ service.name }}
             </a>
         {% empty %}
-            <p class="text-muted">Šiuo metu paslaugų nėra.</p>
+            <p class="text-muted">{% trans "We are not providing any services at the moment." %}</p>
         {% endfor %}
     </div>
 
     <div class="text-center mt-5">
         <a href="{% url 'booking_create_at_salon' salon.id %}" class="btn btn-custom btn-lg w-100">
-            Registruotis vizitui šiame salone
+            {% trans "Book an appointment" %}
         </a>
     </div>
 
