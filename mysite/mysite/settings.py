@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from django.utils.translation import gettext_lazy as _
 
+
 LANGUAGES = (
     ('en-us', _('English')),
     ('lt', _('Lithuanian')),
@@ -65,7 +66,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -187,4 +188,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
 ]

@@ -1,4 +1,4 @@
-from datetime import timezone
+from django.utils import timezone
 from .models import ServiceReview
 from django import forms
 from django.contrib.auth.models import User

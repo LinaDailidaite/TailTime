@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}404 - {% trans "Page Not Found" %}{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-1 fw-bold text-success">404</h1>
+    <h2 class="mb-4">{% trans "Oops! We lost the scent." %}</h2>
+    <p class="lead">{% trans "The page you are looking for doesn't exist or has been moved." %}</p>
+    <a href="{% url 'index' %}" class="btn btn-success btn-lg mt-3">{% trans "Back Home" %}</a>
+</div>
+{% endblock %}

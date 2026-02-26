@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}403 - {% trans "Access Denied" %}{% endblock %}
+
+{% block content %}
+<div class="text-center py-5 text-danger">
+    <h1 class="display-1 fw-bold">403</h1>
+    <h2 class="mb-4">{% trans "Private area! No tail-wagging allowed here." %}</h2>
+    <p class="lead">{% trans "You don't have permission to access this page." %}</p>
+    <a href="{% url 'index' %}" class="btn btn-outline-danger btn-lg mt-3">{% trans "Back Home" %}</a>
+</div>
+{% endblock %}

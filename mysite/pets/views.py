@@ -137,7 +137,7 @@ class ProfileUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 
 
-# LIST VIEW
+# BOOKING LIST VIEW
 class BookingListView(LoginRequiredMixin, UserPassesTestMixin, generic.ListView):
     model = Booking
     context_object_name = "bookings"
